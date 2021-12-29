@@ -1,10 +1,3 @@
-# go-http-server-basic-auth
-
-Simplest basic authenticator for HTTP server
-
-## Usage
-
-```go
 package main
 
 import (
@@ -37,4 +30,3 @@ func main() {
 	}
 	server.ListenAndServe()
 }
-```
