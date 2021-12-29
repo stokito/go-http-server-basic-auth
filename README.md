@@ -2,6 +2,10 @@
 
 Simplest basic authenticator for HTTP server
 
+## Install
+
+    go get -u github.com/stokito/go-http-server-basic-auth@v1.0.0
+
 ## Usage
 
 ```go
@@ -38,3 +42,7 @@ func main() {
 	server.ListenAndServe()
 }
 ```
+
+
+## License
+[0BSD](https://opensource.org/licenses/0BSD) (similar to Public Domain)
