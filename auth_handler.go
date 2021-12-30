@@ -19,8 +19,9 @@ type AuthHandlerWrapper struct {
 }
 
 func (bah *AuthHandlerWrapper) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	authorized := false
-	if !bah.pathIsIgnored(r.URL.Path) {
+	// The OPTIONS must be always allowed for CORS requests
+	if r.Method != http.MethodOptions && !bah.pathIsIgnored(r.URL.Path) {
+		authorized := false
 		username, password, ok := r.BasicAuth()
 		if ok {
 			userPassword := bah.Credentials[username]
