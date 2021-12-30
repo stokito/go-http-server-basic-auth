@@ -32,6 +32,7 @@ func (bah *AuthHandlerWrapper) ServeHTTP(w http.ResponseWriter, r *http.Request)
 		if !authorized {
 			w.Header().Set("WWW-Authenticate", `Basic realm="`+bah.Realm+`", charset="UTF-8"`)
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			return
 		}
 	}
 	bah.Handler.ServeHTTP(w, r)
