@@ -4,7 +4,7 @@ Simplest basic authenticator for HTTP server
 
 ## Install
 
-    go get -u github.com/stokito/go-http-server-basic-auth@v1.0.0
+    go get -u github.com/stokito/go-http-server-basic-auth
 
 ## Usage
 
