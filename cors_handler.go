@@ -7,17 +7,15 @@ type CorsHandlerWrapper struct {
 }
 
 func (h *CorsHandlerWrapper) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var (
-		corsAllowOrigin      = "*"
-		corsExposeHeaders    = "Date"
-		corsAllowMethods     = "HEAD,GET,POST,PUT,DELETE,OPTIONS"
-		corsAllowHeaders     = "Accept,Authorization,Date,Content-Type,Origin"
-		corsAllowCredentials = "true"
-	)
-	w.Header().Set("Access-Control-Allow-Origin", corsAllowOrigin)
-	w.Header().Set("Access-Control-Expose-Headers", corsExposeHeaders)
-	w.Header().Set("Access-Control-Allow-Methods", corsAllowMethods)
-	w.Header().Set("Access-Control-Allow-Headers", corsAllowHeaders)
-	w.Header().Set("Access-Control-Allow-Credentials", corsAllowCredentials)
+	origin := r.Header.Get("Origin")
+	header := w.Header()
+	header.Set("Access-Control-Allow-Origin", origin)
+	header.Set("Access-Control-Allow-Credentials", "true")
+	if r.Method == http.MethodOptions {
+		header.Set("Access-Control-Allow-Methods", "HEAD,GET,POST,PUT,DELETE,OPTIONS")
+		header.Set("Access-Control-Allow-Headers", "Accept,Authorization,Date,Content-Type,Origin")
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
 	h.Handler.ServeHTTP(w, r)
 }
