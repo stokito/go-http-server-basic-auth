@@ -9,16 +9,7 @@ func main() {
 	credentials := map[string]string{"admin": "secret"}
 	serveMux := http.NewServeMux()
 	serveMux.Handle("/", http.FileServer(http.Dir("./www")))
-	serveMux.HandleFunc("/test", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == "GET" {
-			username := r.Header.Get(basicauth.HeaderSubscriberId)
-			body := "Hello " + username
-			w.Header().Set("Content-Type", "text/plain")
-			w.Write([]byte(body))
-			return
-		}
-		w.WriteHeader(http.StatusMethodNotAllowed)
-	})
+	serveMux.HandleFunc("/test", handleReq)
 	server := &http.Server{
 		Addr: ":8080",
 		Handler: &basicauth.AuthHandlerWrapper{
@@ -29,4 +20,15 @@ func main() {
 		},
 	}
 	server.ListenAndServe()
+}
+
+func handleReq(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		username := r.Header.Get(basicauth.HeaderSubscriberId)
+		body := "Hello " + username
+		w.Header().Set("Content-Type", "text/plain")
+		w.Write([]byte(body))
+		return
+	}
+	w.WriteHeader(http.StatusMethodNotAllowed)
 }
