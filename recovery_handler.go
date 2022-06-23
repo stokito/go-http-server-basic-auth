@@ -2,14 +2,15 @@ package basicauth
 
 import (
 	"bytes"
-	"log"
 	"net/http"
 	"runtime/debug"
 )
 
+type LogPrinterFunc func(format string, v ...any)
+
 type RecoveryHandlerWrapper struct {
 	Handler  http.Handler
-	ErrorLog *log.Logger
+	ErrorLog LogPrinterFunc
 }
 
 func (h *RecoveryHandlerWrapper) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -21,7 +22,7 @@ func (h *RecoveryHandlerWrapper) ServeHTTP(w http.ResponseWriter, r *http.Reques
 			// linearize stacktrace
 			stackTrace = bytes.Replace(stackTrace, []byte("\n"), []byte("|"), -1)
 			// the "<3>" is ERR in syslog
-			h.ErrorLog.Printf("<3> FAIL: %s: %s\n", panicErr, stackTrace)
+			h.ErrorLog("<3> FAIL: %s: %s\n", panicErr, stackTrace)
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 	}()

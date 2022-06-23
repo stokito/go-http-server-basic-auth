@@ -11,20 +11,18 @@ var emptiness *string
 
 func main() {
 	serveMux := http.NewServeMux()
-	serveMux.HandleFunc("/test", buggyHandler())
+	serveMux.HandleFunc("/test", buggyHandler)
 	logger := log.New(os.Stdout, "", 0)
 	server := &http.Server{
 		Addr: ":8080",
 		Handler: &basicauth.RecoveryHandlerWrapper{
 			Handler:  serveMux,
-			ErrorLog: logger,
+			ErrorLog: logger.Printf,
 		},
 	}
 	server.ListenAndServe()
 }
 
-func buggyHandler() func(w http.ResponseWriter, r *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		println("%s", *emptiness)
-	}
+func buggyHandler(w http.ResponseWriter, r *http.Request) {
+	println("%s", *emptiness)
 }
