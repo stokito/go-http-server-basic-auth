@@ -6,7 +6,7 @@ import (
 	"runtime/debug"
 )
 
-type LogPrinterFunc func(format string, v ...any)
+type LogPrinterFunc func(format string, v ...interface{})
 
 type RecoveryHandlerWrapper struct {
 	Handler  http.Handler
