@@ -15,7 +15,18 @@ type AuthHandlerWrapper struct {
 	Handler     http.Handler
 	Credentials map[string]string
 	Realm       string
+	wwwAuthHdr  string
 	IgnorePath  []string
+}
+
+func NewAuthHandlerWrapper(handler http.Handler, credentials map[string]string, realm string, ignorePath []string) *AuthHandlerWrapper {
+	return &AuthHandlerWrapper{
+		Handler:     handler,
+		Credentials: credentials,
+		Realm:       realm,
+		wwwAuthHdr:  `Basic realm="` + realm + `", charset="UTF-8"`,
+		IgnorePath:  ignorePath,
+	}
 }
 
 func (bah *AuthHandlerWrapper) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -31,7 +42,7 @@ func (bah *AuthHandlerWrapper) ServeHTTP(w http.ResponseWriter, r *http.Request)
 			}
 		}
 		if !authorized {
-			w.Header().Set("WWW-Authenticate", `Basic realm="`+bah.Realm+`", charset="UTF-8"`)
+			w.Header().Set("WWW-Authenticate", bah.wwwAuthHdr)
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
