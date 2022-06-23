@@ -1,0 +1,7 @@
+GET http://localhost:8080/test
+
+> {%
+client.test("Request failed with 500", function() {
+  client.assert(response.status === 500, "Response status is not 200");
+});
+%}

@@ -8,16 +8,16 @@ import (
 func main() {
 	credentials := map[string]string{"admin": "secret"}
 	serveMux := http.NewServeMux()
-	serveMux.Handle("/", http.FileServer(http.Dir("./www")))
 	serveMux.HandleFunc("/test", handleReq)
+	handler := basicauth.NewAuthHandlerWrapper(
+		serveMux,
+		credentials,
+		"Admin Dashboard",
+		[]string{"/robots.txt", "/favicon.ico", "/.well-known/"},
+	)
 	server := &http.Server{
-		Addr: ":8080",
-		Handler: &basicauth.AuthHandlerWrapper{
-			Handler:     serveMux,
-			Realm:       "Admin Dashboard",
-			Credentials: credentials,
-			IgnorePath:  []string{"/robots.txt", "/favicon.ico", "/.well-known/"},
-		},
+		Addr:    ":8080",
+		Handler: handler,
 	}
 	server.ListenAndServe()
 }
