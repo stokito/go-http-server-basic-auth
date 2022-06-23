@@ -20,7 +20,7 @@ func main() {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 	})
 	server := &http.Server{
-		Addr: ":8000",
+		Addr: ":8080",
 		Handler: &basicauth.AuthHandlerWrapper{
 			Handler:     serveMux,
 			Realm:       "Admin Dashboard",
