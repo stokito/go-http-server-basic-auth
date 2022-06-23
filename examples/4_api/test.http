@@ -1,0 +1,2 @@
+GET http://localhost:8080/test
+Authorization: Basic YWRtaW46c2VjcmV0
