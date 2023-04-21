@@ -13,7 +13,7 @@ func (h *CorsHandlerWrapper) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	header.Set("Access-Control-Allow-Credentials", "true")
 	if r.Method == http.MethodOptions {
 		header.Set("Access-Control-Allow-Methods", "HEAD,GET,POST,PUT,PATCH,DELETE,OPTIONS")
-		header.Set("Access-Control-Allow-Headers", "Accept,Authorization,Date,Content-Type,Origin")
+		header.Set("Access-Control-Allow-Headers", "Accept,Authorization,Content-Type,Date,Origin,X-Requested-With")
 		w.WriteHeader(http.StatusNoContent)
 		return
 	}
