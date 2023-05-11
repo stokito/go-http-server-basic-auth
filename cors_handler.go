@@ -2,6 +2,7 @@ package basicauth
 
 import "net/http"
 
+// CorsHandlerWrapper Middleware to allow CORS requests
 type CorsHandlerWrapper struct {
 	Handler http.Handler
 }

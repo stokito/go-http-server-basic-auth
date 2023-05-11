@@ -8,6 +8,7 @@ import (
 
 type LogPrinterFunc func(format string, v ...interface{})
 
+// RecoveryHandlerWrapper Middleware to catch and log panics
 type RecoveryHandlerWrapper struct {
 	Handler  http.Handler
 	ErrorLog LogPrinterFunc
